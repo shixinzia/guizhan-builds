@@ -4,6 +4,7 @@
  */
 
 const axios = require('axios')
+const logger = require('./logger')
 
 module.exports = {
     deliverBuildStatus
@@ -29,6 +30,9 @@ function deliverBuildStatus (task) {
             method: 'post',
             headers: { Authorization: process.env.WEBHOOK_KEY },
             data: build
-        }).then(resolve, reject)
+        }).then(resolve, () => {
+            logger.log('')
+            resolve()
+        })
     })
 }

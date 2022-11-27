@@ -14,6 +14,7 @@ const logger = require('./logger')
 const maven = require('./maven')
 const projects = require('./projects')
 const qq = require('./qq')
+const r2 = require('./r2')
 
 module.exports = {
     start
@@ -196,8 +197,10 @@ function upload (task) {
         }
 
         Promise.all(workflows).then(() => {
-            core.setOutput('HAS_UPDATE', 'true')
-            resolve()
+            r2.uploadToR2(task).then(() => {
+                core.setOutput('HAS_UPDATE', 'true')
+                resolve()
+            })
         }, reject)
     })
 }
